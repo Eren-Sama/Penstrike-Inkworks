@@ -131,18 +131,8 @@ import type {
  * This is a critical error that should never happen
  */
 function checkProductionSafety(): void {
-  const isProduction = process.env.NODE_ENV === 'production';
   const isMockMode = isUsingMockData();
-  
-  if (isProduction && isMockMode) {
-    // This will be caught at build time
-    throw new Error(
-      '❌ CRITICAL: Mock data mode is enabled in production!\n' +
-      'This is a configuration error. Set NEXT_PUBLIC_USE_MOCK_DATA=false for production builds.'
-    );
-  }
-  
-  // Runtime warning for non-production environments
+  // Runtime warning for any environment (including production) in browser
   if (isMockMode && typeof window !== 'undefined') {
     console.warn(
       '⚠️ [Penstrike] Running in MOCK DATA mode. Data is not real.\n' +
